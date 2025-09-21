@@ -62,7 +62,8 @@ header#navbar {
     padding: 12px 18px;
     color: #e6e9ef;
     /* darker background while still being semi-transparent so the page gradient shows through */
-    background: rgba(6, 12, 30, 0.48);
+      background: linear-gradient(135deg,  #010b1b);
+
     backdrop-filter: blur(6px); /* soft glass effect */
     -webkit-backdrop-filter: blur(6px);
     border-radius: 10px; /* small rounding so the navbar looks neat on top */
@@ -71,8 +72,8 @@ header#navbar {
     top: 8px; /* small offset so rounded corners are visible */
     z-index: 1200;
     box-shadow: 0 8px 24px rgba(5, 10, 25, 0.12);
+  
 }
-
 
 
         #brand {
@@ -84,7 +85,7 @@ header#navbar {
             width: 44px;
             height: 44px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #1E3C72, #2A5298);
+            background: linear-gradient(135deg, #02102b, #112240);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -95,23 +96,26 @@ header#navbar {
         nav#main-nav {
             display: flex;
             color: white;
+           
             gap: 14px;
             align-items: center
         }
         nav#main-nav a {
             padding: 8px 12px;
             border-radius: 8px;
+            
             color: white;
             
             font-weight: 600;
             opacity: .95
         }
         nav#main-nav a:hover {
-            background: rgba(255, 255, 255, 0.08)
+            background: linear-gradient(135deg, #02102b, #112240);
         }
         /* three-dot button */
         #nav-toggle {
             display: none;
+            background: linear-gradient(135deg, #02102b, #112240);
             background: none;
             border-radius: 8px;
             padding: 6px 8px;
@@ -123,7 +127,7 @@ header#navbar {
                 position: fixed;
                 right: 12px;
                 top: 60px;
-                background: rgba(255, 255, 255, 0.98);
+                background: linear-gradient(135deg, #02102b, #112240);
                 flex-direction: column;
                 padding: 12px;
                 border-radius: 10px;
@@ -481,7 +485,7 @@ header#navbar {
 <body>
     <header id="navbar">
         <div id="brand">
-            <div class="logo">B</div>
+            <div class="logo">LXP</div>
             <div>
                 <div style="font-weight:700">LocalXplora</div>
                 <div style="font-size:12px;color:var(--muted);margin-top:3px">Heritage · Hotspots · Guides</div>
@@ -502,8 +506,8 @@ header#navbar {
     <section id="hero" role="region" aria-labelledby="hero-heading">
         <div class="hero-inner">
             <div class="hero-text">
-                <h1 id="hero-heading">Discover Bengaluru — culture, nature, and hidden gems</h1>
-                <p>From Tipu's Palaces to neighborhood cafés — explore curated heritage and popular spots, open the map to locate any place instantly.</p>
+                <h1 id="hero-heading">Beyond the Map — Culture, History, Experiences, Nature, and Hidden gems</h1>
+                <p>From historic palaces to cozy cafés — explore curated heritage and popular spots, open the map to locate any place instantly.</p>
                 <div class="hero-ctas">
                     <button class="btn" id="open-map-cta">Open Map</button>
                     <button class="btn ghost" id="learn-more">How it works</button>
@@ -512,9 +516,10 @@ header#navbar {
             <div class="cta-card" aria-hidden="false">
                 <div style="font-weight:700">Quick actions</div>
                 <div style="font-size:14px;color:var(--muted)">
-                    • Tap a card to open its location on the map<br>
-                    • Use the search inside the map to find other places<br>
-                    • Get a local guide via the 'Get Guide' button
+                    • Tap a image to open its location on the map<br>
+                    • Add hidden gems in your locality<br>
+                    • Get a local guide via the 'Get Guide' button<br>
+                    • Use chatbots to search nearby hotels,ATMs,etc
                 </div>
             </div>
         </div>
@@ -523,25 +528,25 @@ header#navbar {
         <h2 class="section-title" id="heritage">Heritage & Culture</h2>
         <div class="slider" id="heritage-slider" aria-label="Heritage slider">
             <!-- NOTE: added playsinline and draggable="false" to videos -->
-            <div class="card heritage-card" data-location="heritage1">
-                <video src="https://assets.mixkit.co/videos/preview/mixkit-flying-over-an-ancient-temple-42092-large.mp4" muted loop playsinline draggable="false"></video>
-                <div class="label">Temple Site</div>
+            <div class="card heritage-card" data-location="Hampi">
+                <img src="hampi.jpg" alt="Heritage Building">
+                <div class="label">Hampi</div>
             </div>
-            <div class="card heritage-card" data-location="heritage2">
-                <img src="https://source.unsplash.com/400x300/?palace,india" alt="Palace">
-                <div class="label">Historic Palace</div>
+            <div class="card heritage-card" data-location="Ellora caves">
+              <img src="elloracaves.jpg" alt="Heritage Building">   
+                <div class="label">Ellora caves</div>
             </div>
-            <div class="card heritage-card" data-location="heritage3">
-                <video src="https://assets.mixkit.co/videos/preview/mixkit-drone-view-of-an-ancient-temple-34208-large.mp4" muted loop playsinline draggable="false"></video>
-                <div class="label">Ancient Ruins</div>
+            <div class="card heritage-card" data-location="Shivanasamudra falls">
+                <img src="fall.jpg" alt="Heritage Building">
+                <div class="label">Shivanasamudra falls</div>
             </div>
-            <div class="card heritage-card" data-location="heritage4">
-                <img src="https://source.unsplash.com/400x300/?heritage,india" alt="Heritage Building">
-                <div class="label">Heritage Building</div>
+            <div class="card heritage-card" data-location="Aihole">
+                <img src="aihole.jpg" alt="Heritage Building">
+                <div class="label">Aihole</div>
             </div>
-            <div class="card heritage-card" data-location="heritage5">
-                <video src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-the-city-in-india-2365-large.mp4" muted loop playsinline draggable="false"></video>
-                <div class="label">City Heritage</div>
+            <div class="card heritage-card" data-location="Badami">
+                <img src="badami.jpg" alt="Heritage Building">
+                <div class="label">Badami</div>
             </div>
         </div>
         <h2 class="section-title" id="popular">Popular in Bengaluru</h2>
@@ -656,35 +661,35 @@ header#navbar {
                 desc: "Nandi Hills is an ancient hill fortress built by the Ganga dynasty in the Chikkaballapur district of Karnataka state. It is now a locality situated 10 km from Chickballapur town and approximately 60 km from Bengaluru."
             },
             // Heritage locations with videos/images
-            "heritage1": {
-                lat: 12.97,
-                lon: 77.59,
+            "Hampi": {
+                lat: 15.3350,
+                lon: 76.4600,
+                video: "HAMPI.mp4",
+                desc: "Hampi also referred to as the Group of Monuments at Hampi, is a UNESCO World Heritage Site located in the town of Hampi in Vijayanagara district, east-central Karnataka, India.Hampi predates to the Vijayanagara Empire."
+            },
+            "Ellora caves": {
+                lat: 20.0268,
+                lon: 75.1771,
                 video: "Ellora caves.mp4",
-                desc: "A stunning temple site, rich with history and architectural beauty."
+                desc: "The Ellora Caves are a UNESCO World Heritage Site in Aurangabad, India. It is one of the largest rock-cut cave complexes in the world, with artwork dating from AD 600–1000, including Hindu, Buddhist, and Jain caves."
             },
-            "heritage2": {
-                lat: 12.99,
-                lon: 77.61,
-                video: "Ellora caves.mp4",
-                desc: "An ornate, historic palace showcasing royal heritage."
+            "Shivanasamudra falls": {
+                lat: 12.2997,
+                lon: 77.1773,
+                video: "Shivanasamudra.mp4",
+                desc: "Shivanasamudra Falls is a cluster of waterfalls on the borders of Malavalli, Mandya and Kollegala, Chamarajanagara, in Karnataka, India, situated along the river Kaveri."
             },
-            "heritage3": {
-                lat: 12.98,
-                lon: 77.605,
-                video: "https://assets.mixkit.co/videos/preview/mixkit-drone-view-of-an-ancient-temple-34208-large.mp4",
-                desc: "Explore the ancient ruins of a forgotten era."
+            "Aihole": {
+                lat: 16.0198,
+                lon: 75.8810,
+                images: ["aihole.jpg"],
+                desc: "Aihole is a major archaeological site, featuring over 120 stone and cave temples spread along the Malaprabha river valley, in Bagalakote district."
             },
-            "heritage4": {
-                lat: 12.965,
-                lon: 77.595,
-                images: ["https://source.unsplash.com/400x300/?historic,india"],
-                desc: "A beautiful historic building with intricate details."
-            },
-            "heritage5": {
-                lat: 12.975,
-                lon: 77.585,
-                images: ["https://source.unsplash.com/400x300/?historic,india"],
-                desc: "An aerial view of the city's urban heritage."
+            "Badami": {
+                lat: 15.9186,
+                lon: 75.6761,
+                images: ["badamiof1.jpg"],
+                desc: "Badami, formerly known as Vātāpi, is a town and headquarters of a taluk by the same name, in the Bagalkot district of Karnataka, India. It was the regal capital of the Badami Chalukyas from 540 to 757."
             },
         };
         // small UI helpers
