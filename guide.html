@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Our Guides</title>
+  <style>
+    /* Page background */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+      background: linear-gradient(160deg, #b0c4de 0%, #9bb0d8 50%, #82a0be 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1f2937;
+    }
+
+    /* Outer container */
+    .container {
+      width: 92%;
+      max-width: 980px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(20,30,60,0.1);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s ease;
+    }
+
+    /* Center search vertically before results */
+    .container.centered {
+      justify-content: center;
+      min-height: 68vh;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      margin: 0 0 12px;
+      color: #0f172a;
+      text-align: center;
+    }
+    .subtitle {
+      margin-bottom: 16px;
+      color: #334155;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    /* Search */
+    .search-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+    input[type="text"] {
+      width: 60%;
+      max-width: 520px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+      color: #0f172a;
+      transition: box-shadow 0.12s, transform 0.08s;
+    }
+    input[type="text"]:focus {
+      box-shadow: 0 6px 20px rgba(59,130,246,0.08);
+      transform: translateY(-1px);
+      border-color: #93c5fd;
+    }
+    button.search-btn {
+      padding: 11px 18px;
+      border-radius: 10px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(37,99,235,0.12);
+    }
+
+    .hint {
+      margin-top: 8px;
+      color: #475569;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+    .hint.fail {
+      color: #9a3412;
+      font-weight: 600;
+    }
+
+    /* Results wrapper (holds grid + profile stacked) */
+    .results {
+      position: relative;
+      width: 100%;
+      min-height: 320px; /* default minimum to avoid collapse */
+      margin-top: 16px;
+      transition: min-height 0.25s ease;
+    }
+
+    /* Grid (will be positioned inside results) */
+    .grid {
+      display: none;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .grid.show {
+      display: grid;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Cards with gradient backgrounds & appear animation */
+    .card {
+      background: linear-gradient(145deg, #fbfdff, #e6f0ff);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid #dbeafe;
+      box-shadow: 0 6px 18px rgba(12,18,35,0.06);
+      cursor: pointer;
+      opacity: 0;
+      transform: scale(0.98);
+      animation: cardIn 0.5s forwards;
+    }
+    .card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 14px 34px rgba(12,18,35,0.1); }
+    .card img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin-bottom: 10px;
+      background: linear-gradient(#fff,#f6f9ff);
+    }
+    .card h3 { margin: 6px 0 0; font-size: 1.05rem; color:#0b1220; }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Profile view stacked in the same place as grid */
+    .profile-view {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #111827; /* darker matte */
+      border-radius: 12px;
+      padding: 18px;
+      color: #e6eef8;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .profile-view.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .profile-header {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .profile-header img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 4px solid #263244;
+      object-fit: cover;
+    }
+    .profile-header h2 { margin: 0; color: #f8fafc; font-size: 1.35rem; }
+
+    .profile-section { margin-bottom: 10px; }
+    .profile-section h3 {
+      margin: 0 0 6px; font-size: 1rem; color: #cbd5e1;
+      border-left: 4px solid #60a5fa; padding-left: 10px;
+    }
+    .profile-section p { margin: 0; color: #e6eef8; }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #263244;
+      color: #e6eef8;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 740px) {
+      .grid { grid-template-columns: 1fr; }
+      .profile-header { flex-direction: column; text-align: center; }
+      input[type="text"] { width: 100%; }
+    }
+
+/* Put this in your stylesheet (replace existing .grid / .profile-view rules or add after them) */
+.results > .grid,
+.results > .profile-view {
+  position: absolute;   /* already used, keep it */
+  top: 0;
+  left: 0;
+  right: 0;             /* use left+right instead of width so padding is respected */
+  box-sizing: border-box; /* include padding in the element's width calculation */
+  width: auto;          /* let left/right define the sizing */
+  max-width: 100%;
+}
+
+/* Prevent very long words/strings from causing horizontal overflow */
+.profile-view,
+.profile-view .profile-section p {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Optional: clip any accidental overflow (if you prefer hiding shadows rather than showing overflow) */
+
+
+  </style>
+</head>
+<body>
+  <div class="container centered" id="mainContainer">
+    <h1>Our Guides</h1>
+    <div class="subtitle">Search guides by place. (Try typing <strong>bangalore</strong> or <strong>bengaluru</strong>)</div>
+
+    <!-- Search -->
+    <div class="search-row">
+      <input id="placeInput" type="text" placeholder="enter place" />
+      <button id="searchBtn" class="search-btn">search guide</button>
+    </div>
+    <div id="messageArea" class="hint" style="display:none;"></div>
+
+    <!-- Results wrapper: grid + profile stacked here -->
+    <div class="results" id="results">
+      <!-- Grid -->
+      <div class="grid" id="grid">
+        <div class="card" onclick="openProfile('guide1.jpg','Nishant','History enthusiast with 10+ years of guiding experience.','+91 9988657475','nishant@example.com','10+ years guiding heritage tours')">
+          <img src="guide1.jpg" alt="Nishant">
+          <h3>Nishant</h3>
+        </div>
+
+        <div class="card" onclick="openProfile('guide2.jpg','Jane Smith','Nature and adventure lover.','+91 9988657475','jane@example.com','5 years trekking and wildlife guiding')">
+          <img src="guide2.jpg" alt="Jane Smith">
+          <h3>Charan</h3>
+        </div>
+
+        <div class="card" onclick="openProfile('guide3.jpg','Michael Lee','Food and culture expert.','+91 9988657475','michael@example.com','Street food explorer and city tours')">
+          <img src="guide3.jpg" alt="Michael Lee">
+          <h3>Dhyan</h3>
+        </div>
+
+        <div class="card" onclick="openProfile('guide4.jpg','Sara Khan','Art and museum guide.','+91 9988657475','sara@example.com','Specialist in galleries and heritage sites')">
+          <img src="guide4.jpg" alt="Sara Khan">
+          <h3>Kiran</h3>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="profile-view" id="profile">
+        <button class="back-btn" onclick="closeProfile()">← Back</button>
+
+        <div class="profile-header">
+          <img id="profile-img" src="" alt="Profile Photo">
+          <div>
+            <h2 id="profile-name"></h2>
+            <div style="color:#cbd5e1; font-size:0.9rem; margin-top:6px;">Tap a card to view details</div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>About</h3>
+          <p id="profile-about"></p>
+        </div>
+        <div class="profile-section">
+          <h3>Phone</h3>
+          <p id="profile-phone"></p>
+        </div>
+        <div class="profile-section">
+          <h3>E-mail</h3>
+          <p id="profile-contact"></p>
+        </div>
+        <div class="profile-section">
+          <h3>Experience</h3>
+          <p id="profile-experience"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Element refs
+    const input = document.getElementById('placeInput');
+    const btn = document.getElementById('searchBtn');
+    const grid = document.getElementById('grid');
+    const profile = document.getElementById('profile');
+    const results = document.getElementById('results');
+    const messageArea = document.getElementById('messageArea');
+    const container = document.getElementById('mainContainer');
+
+    // helper: set results min-height to contain el
+    function setResultsMinHeightFor(el) {
+      // measure after layout/paint: use requestAnimationFrame
+      requestAnimationFrame(() => {
+        // ensure element is visible for measurement
+        const prevDisplay = el.style.display;
+        if (getComputedStyle(el).display === 'none') {
+          el.style.display = (el.classList.contains('show') || el.classList.contains('active')) ? '' : 'block';
+        }
+        // small delay to allow images to layout
+        setTimeout(() => {
+          const h = el.scrollHeight;
+          // add small buffer for shadows/spacing
+          results.style.minHeight = (h + 12) + 'px';
+          // restore explicit display if we changed it earlier
+          el.style.display = prevDisplay;
+        }, 40);
+      });
+    }
+
+    // show grid & adjust container
+    function showGrid() {
+      profile.classList.remove('active');
+      grid.classList.add('show');
+      messageArea.style.display = 'none';
+      container.classList.remove('centered');
+
+      // ensure cards animate in and then measure
+      // small timeout to let grid switch to display:grid
+      setTimeout(() => setResultsMinHeightFor(grid), 80);
+    }
+
+    function hideGrid() {
+      grid.classList.remove('show');
+    }
+
+    function showProfile() {
+      grid.classList.remove('show');
+      profile.classList.add('active');
+      container.classList.remove('centered');
+
+      // measure after image loads (if any), to avoid too-small height
+      const img = document.getElementById('profile-img');
+      if (img && img.complete) {
+        setResultsMinHeightFor(profile);
+      } else if (img) {
+        img.onload = () => setResultsMinHeightFor(profile);
+        // fallback measure in 120ms in case onload doesn't fire
+        setTimeout(() => setResultsMinHeightFor(profile), 140);
+      } else {
+        setResultsMinHeightFor(profile);
+      }
+    }
+
+    function hideProfile() {
+      profile.classList.remove('active');
+    }
+
+    // Search logic
+    function searchGuides() {
+      const val = input.value.trim().toLowerCase();
+      if (val === 'bangalore' || val === 'bengaluru') {
+        showGrid();
+      } else if (val === '') {
+        hideGrid();
+        hideProfile();
+        messageArea.innerText = 'Please enter a place. Try typing "bangalore".';
+        messageArea.className = 'hint fail';
+        messageArea.style.display = 'block';
+        container.classList.add('centered');
+        // set results min-height small so container stays centered
+        results.style.minHeight = '160px';
+      } else {
+        hideGrid();
+        hideProfile();
+        messageArea.innerText = 'Try typing bangalore, (other places adding soon)';
+        messageArea.className = 'hint fail';
+        messageArea.style.display = 'block';
+        container.classList.remove('centered');
+        results.style.minHeight = '120px';
+      }
+    }
+
+    // openProfile used by inline onclicks
+    window.openProfile = function(img, name, about, phone, contact, experience) {
+      // populate fields
+      document.getElementById('profile-img').src = img;
+      document.getElementById('profile-name').innerText = name;
+      document.getElementById('profile-about').innerText = about;
+      document.getElementById('profile-phone').innerText = phone;
+      document.getElementById('profile-contact').innerText = contact;
+      document.getElementById('profile-experience').innerText = experience;
+
+      // swap in-place
+      showProfile();
+    };
+
+    window.closeProfile = function() {
+      hideProfile();
+      // if the input still shows a valid place, show grid again
+      const val = input.value.trim().toLowerCase();
+      if (val === 'bangalore' || val === 'bengaluru') {
+        showGrid();
+      } else {
+        // otherwise collapse results a bit
+        results.style.minHeight = '120px';
+        container.classList.add('centered');
+      }
+    };
+
+    // events
+    btn.addEventListener('click', searchGuides);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') searchGuides(); });
+
+    // recalc heights on window resize (keeps mobile stable)
+    window.addEventListener('resize', () => {
+      if (grid.classList.contains('show')) setResultsMinHeightFor(grid);
+      else if (profile.classList.contains('active')) setResultsMinHeightFor(profile);
+    });
+
+    // initial: keep centered and minimal results height
+    document.addEventListener('DOMContentLoaded', () => {
+      results.style.minHeight = '160px';
+      container.classList.add('centered');
+      // ensure cards animate in order slightly staggered for nicer UX
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((c, i) => { c.style.animationDelay = (i * 60) + 'ms'; });
+    });
+  </script>
+</body>
+</html>
